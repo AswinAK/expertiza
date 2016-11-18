@@ -1,6 +1,6 @@
 class AuthController < ApplicationController
   helper :auth
-
+  @@dev_logger = Logger.new("#{Rails.root}/log/dev.log")
   # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
   verify method: :post, only: [:login, :logout],
          redirect_to: {action: :list}
@@ -23,6 +23,7 @@ class AuthController < ApplicationController
         after_login(user)
       else
         logger.warn "Failed login attempt."
+        dev_logger.warn "Test Log to dev logger"
         flash[:error] = "Your username or password is incorrect."
         redirect_to controller: 'password_retrieval', action: 'forgotten'
       end
