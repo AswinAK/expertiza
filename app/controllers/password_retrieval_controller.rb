@@ -1,9 +1,11 @@
 class PasswordRetrievalController < ApplicationController
+  @@dev_logger = Logger.new("#{Rails.root}/log/dev.log")
   def action_allowed?
     true
   end
 
   def forgotten
+    @@dev_logger.warn "Test Log to dev logger from PasswordRetrievalController"
   end
 
   def send_password
