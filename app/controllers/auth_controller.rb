@@ -22,7 +22,7 @@ class AuthController < ApplicationController
       if user and user.valid_password?(params[:login][:password])
         after_login(user)
       else
-        logger.warn "Failed login attempt."
+        logger.warn "Failed login attempt by #{user}."
         flash[:error] = "Your username or password is incorrect."
         redirect_to controller: 'password_retrieval', action: 'forgotten'
       end
@@ -32,8 +32,9 @@ class AuthController < ApplicationController
   # function to handle common functionality for conventional user login and google login
   def after_login(user)
     session[:user] = user
+    logger.warn "user_id: #{user} logged in."
     AuthController.set_current_role(user.role_id, session)
-
+    
     redirect_to controller: AuthHelper.get_home_controller(session[:user]),
                 action: AuthHelper.get_home_action(session[:user])
   end
