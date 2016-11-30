@@ -58,7 +58,9 @@ class AuthController < ApplicationController
   end
 
   def logout
+    logger.warn "Logout attempt by #{session[:user_id]}."
     AuthController.logout(session)
+    
     redirect_to '/'
   end
 
