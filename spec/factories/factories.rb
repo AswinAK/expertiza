@@ -23,11 +23,11 @@ FactoryGirl.define do
   end
 
   factory :admin, class: User do
-    sequence(:name) {|n| "admin#{n}" }
+    sequence(:name, 12) {|n| n=12; "admin#{n}" }
     role { Role.where(name: 'Administrator').first || association(:role_of_administrator) }
     password "password"
     password_confirmation "password"
-    sequence(:fullname) {|n| "#{n}, administrator" }
+    sequence(:fullname, 12) {|n| "#{n}, administrator" }
     email "expertiza@mailinator.com"
     parent_id 1
     private_by_default  false
@@ -182,7 +182,7 @@ FactoryGirl.define do
     preference_priority_number nil
   end
 
-  factory :participant, class: Participant do
+  factory :participant, class: AssignmentParticipant do
     can_submit true
     can_review true
     assignment { Assignment.first || association(:assignment) }
@@ -199,8 +199,25 @@ FactoryGirl.define do
     can_take_quiz true
   end
 
+  factory :course_participant, class: CourseParticipant do
+    can_submit true
+    can_review true
+    course { Course.first || association(:course) }
+    association :user, factory: :student
+    submitted_at nil
+    permission_granted nil
+    penalty_accumulated 0
+    grade nil
+    type "CourseParticipant"
+    handle "handle"
+    time_stamp nil
+    digital_signature nil
+    duty nil
+    can_take_quiz true
+  end
+
   factory :assignment_due_date, class: AssignmentDueDate do
-    due_at "2015-12-30 23:30:12"
+    due_at DateTime.now.in_time_zone + 1.day
     deadline_type { DeadlineType.first || association(:deadline_type) }
     assignment { Assignment.first || association(:assignment) }
     submission_allowed_id 3
@@ -216,9 +233,8 @@ FactoryGirl.define do
     teammate_review_allowed_id 3
     type 'AssignmentDueDate'
   end
-
   factory :topic_due_date, class: TopicDueDate do
-    due_at "2015-12-30 23:30:12"
+    due_at DateTime.now.in_time_zone + 1.day
     deadline_type { DeadlineType.first || association(:deadline_type) }
     topic { SignUpTopic.first || association(:topic) }
     submission_allowed_id 3
@@ -330,10 +346,10 @@ FactoryGirl.define do
   end
 
   factory :response, class: Response do
-    review_response_map { ReviewResponseMap.first || association(:review_response_map) }
+    response_map { ReviewResponseMap.first || association(:review_response_map) }
     additional_comment nil
     version_num nil
-    round nil
+    round 1
     is_submitted false
   end
 end

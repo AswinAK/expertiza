@@ -21,40 +21,49 @@ describe 'logger' do
 =end
 end
 
+=begin
+
     it 'redirects to logger' do
       visit root_path
-      #login_as("administrator12")
+      login_as("administrator12")
 
       click_on 'View Logs'
       expect(page).to have_content("Logs")
+
     end
 
-=begin
+
+=end
   it 'redirects to logger' do
     visit root_path
     login_as("instructor6")
 
-    click_button 'View Logs'
-    expect(page).to have_content("Not authorised to view logs")
-  end
-=end
+    click_on 'View Logs'
+    expect(page).to have_content("An instructor is not allowed to view_logs this/these logger")
 
+  end
+
+=begin
   it 'search based on user id' do
 
     visit root_path
+    login_as("administrator12")
     click_on 'View Logs'
     fill_in('UserID', with:6 )
     click_on 'Search'
     expect(page).to have_content("6")
+
   end
 
   it 'search based on user type' do
 
     visit root_path
+    login_as("administrator12")
     click_on 'View Logs'
     select('Instructor', from: 'UType')
     click_on 'Search'
     expect(page).to have_content("2")
-  end
 
+  end
+=end
   end
