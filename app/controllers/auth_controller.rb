@@ -58,9 +58,7 @@ class AuthController < ApplicationController
 
   def logout
     #E1703 Change  
-    @@event_logger.warn "&auth_controller|logout|#{session[:user].role_id}|#{session[:user].id}|Logout"
-    #E1703 Change ends
-    AuthController.logout(session)
+
     
     redirect_to '/'
   end
@@ -70,7 +68,9 @@ class AuthController < ApplicationController
     check_controller = false
 
     if params[:controller] == 'content_pages' and
-      params[:action] == 'view'
+      params[:action] == 'view'@@event_logger.warn "&auth_controller|logout|#{session[:user].role_id}|#{session[:user].id}|Logout"
+    #E1703 Change ends
+    AuthController.logout(session)
       if session[:credentials].pages.key?(params[:page_name].to_s)
         if session[:credentials].pages[params[:page_name].to_s] == true
           logger.info "Page: authorised"

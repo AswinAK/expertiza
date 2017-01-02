@@ -23,6 +23,7 @@ class ExportFileController < ApplicationController
   end
 
   def export
+    @@event_logger.warn "&expert_file_controller|export|#{user.role_id}|#{user.id}|Export"
     @delim_type = params[:delim_type]
     if @delim_type == "comma"
       filename = params[:model] + params[:id] + ".csv"
